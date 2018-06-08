@@ -1,6 +1,22 @@
-// Copyright (c) 2011-2016 The Cryptonote developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+// Copyright (c) 2018 {DRGL}
+// Copyright (c) 2012-2016, The CryptoNote developers, The Bytecoin developers
+// Copyright (c) 2016, The Forknote developers
+// Copyright (c) 2016, The Karbowanec developers
+//
+// This file is part of Bytecoin.
+//
+// Bytecoin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Bytecoin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "HttpServer.h"
 
@@ -9,6 +25,8 @@
 
 #include <Logging/LoggerRef.h>
 #include "CoreRpcServerCommandsDefinitions.h"
+
+#include "Common/Math.h"
 
 namespace CryptoNote {
 
@@ -21,6 +39,8 @@ public:
   RpcServer(System::Dispatcher& dispatcher, Logging::ILogger& log, core& c, NodeServer& p2p, const ICryptoNoteProtocolQuery& protocolQuery);
 
   typedef std::function<bool(RpcServer*, const HttpRequest& request, HttpResponse& response)> HandlerFunction;
+  bool restrictRPC(const bool is_resctricted);
+  bool enableCors(const std::string domain);
 
 private:
 
@@ -66,11 +86,19 @@ private:
   bool on_get_block_header_by_height(const COMMAND_RPC_GET_BLOCK_HEADER_BY_HEIGHT::request& req, COMMAND_RPC_GET_BLOCK_HEADER_BY_HEIGHT::response& res);
 
   void fill_block_header_response(const Block& blk, bool orphan_status, uint64_t height, const Crypto::Hash& hash, block_header_response& responce);
+  
+  bool f_on_blocks_list_json(const F_COMMAND_RPC_GET_BLOCKS_LIST::request& req, F_COMMAND_RPC_GET_BLOCKS_LIST::response& res);
+  bool f_on_block_json(const F_COMMAND_RPC_GET_BLOCK_DETAILS::request& req, F_COMMAND_RPC_GET_BLOCK_DETAILS::response& res);
+  bool f_on_transaction_json(const F_COMMAND_RPC_GET_TRANSACTION_DETAILS::request& req, F_COMMAND_RPC_GET_TRANSACTION_DETAILS::response& res);
+  bool f_on_pool_json(const F_COMMAND_RPC_GET_POOL::request& req, F_COMMAND_RPC_GET_POOL::response& res);
+  bool f_getMixin(const Transaction& transaction, uint64_t& mixin);
 
   Logging::LoggerRef logger;
   core& m_core;
   NodeServer& m_p2p;
   const ICryptoNoteProtocolQuery& m_protocolQuery;
+  bool m_restricted_rpc;
+  std::string m_cors_domain;
 };
 
 }

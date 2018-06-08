@@ -1,6 +1,20 @@
-// Copyright (c) 2011-2016 The Cryptonote developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+// Copyright (c) 2012-2016, The CryptoNote developers, The Bytecoin developers
+// Copyright (c) 2014-2016 XDN developers
+//
+// This file is part of Bytecoin.
+//
+// Bytecoin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Bytecoin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "WalletRpcServer.h"
 
@@ -23,10 +37,14 @@ namespace Tools {
 
 const command_line::arg_descriptor<uint16_t> wallet_rpc_server::arg_rpc_bind_port = { "rpc-bind-port", "Starts wallet as rpc server for wallet operations, sets bind port for server", 0, true };
 const command_line::arg_descriptor<std::string> wallet_rpc_server::arg_rpc_bind_ip = { "rpc-bind-ip", "Specify ip to bind rpc server", "127.0.0.1" };
+const command_line::arg_descriptor<std::string> wallet_rpc_server::arg_rpc_user = { "rpc-user", "Username to use the rpc server. If authorization is not required, leave it empty", "" };
+const command_line::arg_descriptor<std::string> wallet_rpc_server::arg_rpc_password = { "rpc-password", "Password to use the rpc server. If authorization is not required, leave it empty", "" };
 
 void wallet_rpc_server::init_options(boost::program_options::options_description& desc) {
   command_line::add_arg(desc, arg_rpc_bind_ip);
   command_line::add_arg(desc, arg_rpc_bind_port);
+  command_line::add_arg(desc, arg_rpc_user);
+  command_line::add_arg(desc, arg_rpc_password);
 }
 //------------------------------------------------------------------------------------------------------------------------------
 wallet_rpc_server::wallet_rpc_server(
@@ -48,7 +66,7 @@ wallet_rpc_server::wallet_rpc_server(
 }
 //------------------------------------------------------------------------------------------------------------------------------
 bool wallet_rpc_server::run() {
-  start(m_bind_ip, m_port);
+  start(m_bind_ip, m_port, m_rpcUser, m_rpcPassword);
   m_stopComplete.wait();
   return true;
 }
@@ -65,6 +83,8 @@ void wallet_rpc_server::send_stop_signal() {
 bool wallet_rpc_server::handle_command_line(const boost::program_options::variables_map& vm) {
   m_bind_ip = command_line::get_arg(vm, arg_rpc_bind_ip);
   m_port = command_line::get_arg(vm, arg_rpc_bind_port);
+  m_rpcUser = command_line::get_arg(vm, arg_rpc_user);
+  m_rpcPassword = command_line::get_arg(vm, arg_rpc_password);  
   return true;
 }
 //------------------------------------------------------------------------------------------------------------------------------
@@ -280,3 +300,4 @@ bool wallet_rpc_server::on_reset(const wallet_rpc::COMMAND_RPC_RESET::request& r
 }
 
 }
+

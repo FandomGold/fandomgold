@@ -1,6 +1,21 @@
-// Copyright (c) 2011-2016 The Cryptonote developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+// Copyright (c) 2012-2016, The CryptoNote developers, The Bytecoin developers
+// Copyright (c) 2014-2016 XDN developers
+// Copyright (c) 2016 Karbowanec developers
+//
+// This file is part of Bytecoin.
+//
+// Bytecoin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Bytecoin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "HttpServer.h"
 #include <boost/scope_exit.hpp>
@@ -12,6 +27,44 @@
 
 using namespace Logging;
 
+namespace {
+	std::string base64Encode(const std::string& data) {
+		static const char* encodingTable = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+		const size_t resultSize = 4 * ((data.size() + 2) / 3);
+		std::string result;
+		result.reserve(resultSize);
+
+		for (size_t i = 0; i < data.size(); i += 3) {
+			size_t a = static_cast<size_t>(data[i]);
+			size_t b = i + 1 < data.size() ? static_cast<size_t>(data[i + 1]) : 0;
+			size_t c = i + 2 < data.size() ? static_cast<size_t>(data[i + 2]) : 0;
+
+			result.push_back(encodingTable[a >> 2]);
+			result.push_back(encodingTable[((a & 0x3) << 4) | (b >> 4)]);
+			if (i + 1 < data.size()) {
+				result.push_back(encodingTable[((b & 0xF) << 2) | (c >> 6)]);
+				if (i + 2 < data.size()) {
+					result.push_back(encodingTable[c & 0x3F]);
+				}
+			}
+		}
+
+		while (result.size() != resultSize) {
+			result.push_back('=');
+		}
+
+		return result;
+	}
+
+	void fillUnauthorizedResponse(CryptoNote::HttpResponse& response) {
+		response.setStatus(CryptoNote::HttpResponse::STATUS_401);
+		response.addHeader("WWW-Authenticate", "Basic realm=\"RPC\"");
+		response.addHeader("Content-Type", "text/plain");
+		response.setBody("Authorization required");
+	}
+
+}
+
 namespace CryptoNote {
 
 HttpServer::HttpServer(System::Dispatcher& dispatcher, Logging::ILogger& log)
@@ -19,9 +72,13 @@ HttpServer::HttpServer(System::Dispatcher& dispatcher, Logging::ILogger& log)
 
 }
 
-void HttpServer::start(const std::string& address, uint16_t port) {
+void HttpServer::start(const std::string& address, uint16_t port, const std::string& user, const std::string& password) {
   m_listener = System::TcpListener(m_dispatcher, System::Ipv4Address(address), port);
   workingContextGroup.spawn(std::bind(&HttpServer::acceptLoop, this));
+  
+  		if (!user.empty() || !password.empty()) {
+			m_credentials = base64Encode(user + ":" + password);
+		}
 }
 
 void HttpServer::stop() {
@@ -62,9 +119,16 @@ void HttpServer::acceptLoop() {
     for (;;) {
       HttpRequest req;
       HttpResponse resp;
+	  resp.addHeader("Access-Control-Allow-Origin", "*");
 
       parser.receiveRequest(stream, req);
-      processRequest(req, resp);
+				if (authenticate(req)) {
+					processRequest(req, resp);
+				}
+				else {
+					logger(WARNING) << "Authorization required " << addr.first.toDottedDecimal() << ":" << addr.second;
+					fillUnauthorizedResponse(resp);
+				}
 
       stream << resp;
       stream.flush();
@@ -82,4 +146,24 @@ void HttpServer::acceptLoop() {
   }
 }
 
+	bool HttpServer::authenticate(const HttpRequest& request) const {
+		if (!m_credentials.empty()) {
+			auto headerIt = request.getHeaders().find("authorization");
+			if (headerIt == request.getHeaders().end()) {
+				return false;
+			}
+
+			if (headerIt->second.substr(0, 6) != "Basic ") {
+				return false;
+			}
+
+			if (headerIt->second.substr(6) != m_credentials) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 }
+
