@@ -509,7 +509,7 @@ bool get_block_longhash(cn_context &context, const Block& b, Hash& res) {
   } else {
     return false;
   }
-  const int cn_variant = b.majorVersion >= BLOCK_MAJOR_VERSION_5 ? b.majorVersion - 4 : 0;
+  const int cn_variant = b.major_version < 5 ? 0 : b.major_version >= BLOCK_MAJOR_VERSION_6 ? 2 : 1;
   cn_slow_hash(context, bd.data(), bd.size(), res, cn_variant);
   return true;
 }
