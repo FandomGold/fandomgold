@@ -20,8 +20,10 @@
 #include <iomanip>
 #include <ios>
 #include <string>
+#include <cfenv>
 
 #include "crypto/hash.h"
+#include "crypto/variant2_int_sqrt.h"
 #include "../Io.h"
 
 using namespace std;
