@@ -64,8 +64,8 @@ DaemonCommandsHandler::DaemonCommandsHandler(CryptoNote::core& core, CryptoNote:
   m_consoleHandler.setHandler("print_ban", boost::bind(&DaemonCommandsHandler::print_ban, this, _1), "Print banned nodes");
   m_consoleHandler.setHandler("ban", boost::bind(&DaemonCommandsHandler::ban, this, _1), "Ban a given <IP> for a given amount of <seconds>, ban <IP> [<seconds>]");
   m_consoleHandler.setHandler("unban", boost::bind(&DaemonCommandsHandler::unban, this, _1), "Unban a given <IP>, unban <IP>");
-} m_consoleHandler.setHandler("status", boost::bind(&DaemonCommandsHandler::status, this, _1), "Show daemon status");
-
+  m_consoleHandler.setHandler("status", boost::bind(&DaemonCommandsHandler::status, this, _1), "Show daemon status");
+}
 //--------------------------------------------------------------------------------
 std::string DaemonCommandsHandler::get_commands_str()
 {
@@ -91,9 +91,9 @@ std::string DaemonCommandsHandler::get_mining_speed(uint32_t hr) {
 float DaemonCommandsHandler::get_sync_percentage(uint64_t height, uint64_t target_height) {
   target_height = target_height ? target_height < height ? height : target_height : height;
   float pc = 100.0f * height / target_height;
-  if (height < target_height && pc > 99.9f)
+  if (height < target_height && pc > 99.9f){
     return 99.9f; // to avoid 100% when not fully synced
-
+  }
     return pc;
 }
 
@@ -112,7 +112,7 @@ bool DaemonCommandsHandler::help(const std::vector<std::string>& args) {
 
 //--------------------------------------------------------------------------------
 bool DaemonCommandsHandler::status(const std::vector<std::string>& args) {
-  uint32_t height = m_core.get_current_blockchain_height();
+  uint32_t height = m_core.get_current_blockchain_height() - 1;
   uint64_t difficulty = m_core.getNextBlockDifficulty();
   size_t tx_pool_size = m_core.get_pool_transactions_count();
   size_t alt_blocks_count = m_core.get_alternative_blocks_count();
@@ -129,8 +129,9 @@ bool DaemonCommandsHandler::status(const std::vector<std::string>& args) {
   bool synced = ((uint32_t)height == (uint32_t)last_known_block_index);
 
   std::cout << std::endl
-    << "Height: " << height << "/" << last_known_block_index << " (" << get_sync_percentage(height, last_known_block_index) << "%) "
-    << "on " << (m_core.currency().isTestnet() ? "testnet, " : "mainnet, ") << (synced ? "synced, " : "syncing, ")
+    << (synced ? "Synced " : "Syncing ") << height << "/" << last_known_block_index 
+    << " (" << get_sync_percentage(height, last_known_block_index) << "%) "
+    << "on " << (m_core.currency().isTestnet() ? "testnet, " : "mainnet, ")
     << "network hashrate: " << get_mining_speed(hashrate) << ", difficulty: " << difficulty << ", "
     << "block v. " << (int)majorVersion << ", "
     << outgoing_connections_count << " out. + " << incoming_connections_count << " inc. connections, "

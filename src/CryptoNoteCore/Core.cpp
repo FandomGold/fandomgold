@@ -1,21 +1,18 @@
-// {DRGL} Kills White Walkers
-// <https://www.ZirtysPerzys.org>
-//
 // Copyright (c) 2012-2016 The CryptoNote developers
 // Copyright (c) 2016-2018 The Karbowanec developers
-// Copyright (c) 2018-2019 The DRAGONGLASS developers
+// Copyright (c) 2018-2019 The FANDOM GOLD developers
 //
-// This file is part of DRAGONGLASS.
-// DRAGONGLASS is free software: you can redistribute it and/or modify
+// This file is part of FANDOM GOLD.
+// FANDOM GOLD is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// DRAGONGLASS is distributed in the hope that it will be useful,
+// FANDOM GOLD is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
 // You should have received a copy of the GNU Lesser General Public License
-// along with DRAGONGLASS.  If not, see <http://www.gnu.org/licenses/>.
+// along with FANDOM GOLD.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Core.h"
 
@@ -332,7 +329,7 @@ bool core::check_tx_semantic(const Transaction& tx, bool keeped_by_block) {
 bool core::check_tx_inputs_keyimages_diff(const Transaction& tx) {
 
   // parameters used for the additional key_image check
-  static const Crypto::KeyImage Z = { { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } };
+ // static const Crypto::KeyImage Z = { { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } };
   static const Crypto::KeyImage I = { { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } };
   static const Crypto::KeyImage L = { { 0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58, 0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10 } };
 
@@ -764,18 +761,15 @@ bool core::update_miner_block_template() {
 
 bool core::on_idle() {
   if (!m_starter_message_showed) {
-    logger(INFO, BRIGHT_BLUE)
+    logger(INFO, BRIGHT_YELLOW)
       << "**********************************************************************" << ENDL
       << "The daemon will now begin synchronizing with the network's historical chain of data blocks. It may take some time." << ENDL
-      << ENDL
       << "You can use the \"set_log <level>\" command for a more detailed view of the process."<< ENDL
       << "Using <level> option from 0 (no details) up to 4 (very verbose)." << ENDL
-      << ENDL
       << "Use \"help\" command to see a list of available commands." << ENDL
-      << ENDL
       << "Note: in case you need to interrupt the process, use \"exit\" command,"<<ENDL
       << "Otherwise the current progress won't be saved." << ENDL;
-      logger(INFO, BRIGHT_BLUE)
+      logger(INFO, BRIGHT_YELLOW)
       << "**********************************************************************";
     m_starter_message_showed = true;
   }
@@ -1176,4 +1170,3 @@ bool core::removeMessageQueue(MessageQueue<BlockchainMessage>& messageQueue) {
 }
 
 }
-
