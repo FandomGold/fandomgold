@@ -1,23 +1,21 @@
 
-
-// {DRGL} Kills White Walkers
-
-// ©2018 {DRÆGONGLASS}
-// <http://www.ZirtysPerzys.org>
+// <https://fandom.gold>
 // Copyright (c) 2012-2016, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2016, The Forknote developers
 // Copyright (c) 2016, The Karbowanec developers
-// This file is part of Bytecoin.
-// Bytecoin is free software: you can redistribute it and/or modify
+// Copyright (c) 2018-2019 The Fandom Gold developers
+
+// This file is part of Fandom Gold.
+// Fandom Gold is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// Bytecoin is distributed in the hope that it will be useful,
+// Fandom Gold is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
 // You should have received a copy of the GNU Lesser General Public License
-// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
+// along with Fandom Gold.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "version.h"
 
@@ -29,12 +27,14 @@
 #include "Common/SignalHandler.h"
 #include "Common/PathTools.h"
 #include "crypto/hash.h"
+#include "CheckpointsData.h"
 #include "CryptoNoteCore/CryptoNoteTools.h"
 #include "CryptoNoteCore/Core.h"
 #include "CryptoNoteCore/CoreConfig.h"
 #include "CryptoNoteCore/Currency.h"
 #include "CryptoNoteCore/MinerConfig.h"
 #include "CryptoNoteProtocol/CryptoNoteProtocolHandler.h"
+#include "CryptoNoteProtocol/ICryptoNoteProtocolQuery.h"
 #include "P2p/NetNode.h"
 #include "P2p/NetNodeConfig.h"
 #include "Rpc/RpcServer.h"
@@ -191,7 +191,16 @@ int main(int argc, char* argv[])
     // configure logging
     logManager.configure(buildLoggerConfiguration(cfgLogLevel, cfgLogFile));
 
-    logger(INFO, BRIGHT_WHITE) << "{{{{DRAGONGLASS}}}}" << " v" << PROJECT_VERSION_LONG;
+    logger(INFO, BRIGHT_YELLOW) <<
+
+    "                                  \n"
+    "                                  \n"
+    "                                  \n"
+    " ╔═╗╔═╗╔╗╔╔╦╗╔═╗╔╦╗  ╔═╗╔═╗╦  ╔╦╗ \n"
+    " ╠╣ ╠═╣║║║ ║║║ ║║║║  ║ ╦║ ║║   ║║ \n"    
+    " ╚  ╩ ╩╝╚╝═╩╝╚═╝╩ ╩  ╚═╝╚═╝╩═╝═╩╝" << " v" << PROJECT_VERSION_LONG
+    "                                  \n"
+    "                                  \n";
 
     if (command_line_preprocessor(vm, logger)) {
       return 0;
@@ -253,7 +262,7 @@ int main(int argc, char* argv[])
 
     cprotocol.set_p2p_endpoint(&p2psrv);
     ccore.set_cryptonote_protocol(&cprotocol);
-    DaemonCommandsHandler dch(ccore, p2psrv, logManager);
+    DaemonCommandsHandler dch(ccore, p2psrv, logManager, cprotocol, &rpcServer);
 
     // initialize objects
     logger(INFO) << "Initializing p2p server...";

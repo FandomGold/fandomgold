@@ -286,7 +286,10 @@ struct COMMAND_RPC_GET_INFO {
     uint64_t white_peerlist_size;
     uint64_t grey_peerlist_size;
     uint32_t last_known_block_index;
-	std::string fee_address;
+    uint64_t start_time;
+        std::string fee_address;
+      uint8_t block_major_version;
+	std::string already_generated_coins;
 
     void serialize(ISerializer &s) {
       KV_MEMBER(status)
@@ -303,7 +306,10 @@ struct COMMAND_RPC_GET_INFO {
       KV_MEMBER(white_peerlist_size)
       KV_MEMBER(grey_peerlist_size)
       KV_MEMBER(last_known_block_index)
-	  KV_MEMBER(fee_address)
+      KV_MEMBER(start_time)
+      KV_MEMBER(fee_address)
+      KV_MEMBER(block_major_version)
+      KV_MEMBER(already_generated_coins)
     }
   };
 };
