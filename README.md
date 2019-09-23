@@ -1,17 +1,17 @@
 ##### Master Status
 
 [![Build Status](https://travis-ci.org/ZirtysPerzys/dragonglass.svg?branch=master)](https://travis-ci.org/ZirtysPerzys/dragonglass)
-<p align="right"><a href="https://zirtysperzys.org">Website</a><p align="right">
+<p align="right"><a href="https://fandom.gold">Website</a><p align="right">
 <p align="right"><a href="https://drgl.info">ChainXplore</a><p align="right">
 <p align="right"><a href="https://drgl.online">ÆJTs Pool</a><p align="right">
 <p align="right"><a href="https://crypto9coin.cf/drgl">Pxckets Pool</a><p align="right">
 <p align="right"><a href="https://drgl.cool-pool.net/">CoolPool</a><p align="right">
-<h1 align="center"><img title="The Long Night Is Coming" src="https://raw.githubusercontent.com/ZirtysPerzys/DRGL-X/master/images/DRGL/DRGLdragonglass.png" width="200" height="200" ><img/></h1>
+<h1 align="center"><img title="The Long Night Is Coming" src="https://avatars2.githubusercontent.com/u/55260556?s=200&v=4" width="200" height="200" ><img/></h1>
 
-<h2 align="center">⟬⟬⟬⟬ DRAGONGLASS ⟭⟭⟭⟭<h2 align="center">
+<h2 align="center"> FANDOM GOLD <h2 align="center">
 
-<p align="center">Rare Private Cryptocurrency <p align="center">
-........that kills white walkers.
+<p align="center">Rare P2P Privacy Currency <p align="center">
+
 
 
 
@@ -39,13 +39,13 @@ executing the following command.
  sudo apt-get install build-essential git cmake libboost-all-dev
 ```
 
-2. Clone DRGL repository
+2. Clone Fandom Gold repository
 ```
-git clone https://github.com/ZirtysPerzys/dragonglass
+git clone https://github.com/FandomGold/fango
 ```
 3. Open folder with copied repository
 
-`cd dragonglass`
+`cd fango`
 
 4. Building (Compiling)
 
@@ -57,20 +57,20 @@ make -j4
 The resulting executables can be found in build/release/src.
 
 
-5. Starting dragonglass daemon
+5. Starting fango daemon
 `
-cd dragonglass/build/release/src 
+cd fango/build/release/src 
 `
 
 *** Start daemon, by typing the following command-
 `
-./dragonglassd 
+./fandomgold 
 `
 for a list of commands in dæmon type  --help
 
 
 
-alternatively, &/or also see the [{DRGL} GUI Wallet](https://github.com/ZirtysPerzys/DRGL)
+alternatively, &/or also see the [{XGD} GUI Wallet](https://github.com/ZirtysPerzys/DRGL)
 
 
 _________________________________________________________
