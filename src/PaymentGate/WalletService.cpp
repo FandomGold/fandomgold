@@ -1,20 +1,22 @@
 // Copyright (c) 2012-2016, The CryptoNote developers, The Bytecoin developers
-// Copyright (c) 2018, Karbo developers
+// Copyright (c) 2018-2019 Karbo developers
+// Copyright (c) 2018-2019 Fandom Gold developers
+
 //
-// This file is part of Bytecoin.
+// This file is part of Fandom Gold.
 //
-// Bytecoin is free software: you can redistribute it and/or modify
+// Fandom Gold is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Bytecoin is distributed in the hope that it will be useful,
+// Fandom Gold is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
+// along with Fandom Gold.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "WalletService.h"
 
@@ -266,6 +268,17 @@ std::vector<PaymentService::TransactionHashesInBlockRpcInfo> convertTransactions
   }
 
   return transactionHashes;
+}
+
+void validateMixin(const uint16_t& mixin, const CryptoNote::Currency& currency, Logging::LoggerRef logger) {
+    if (mixin < currency.minMixin()) {
+        logger(Logging::WARNING, Logging::BRIGHT_YELLOW) << "Mixin must be equal to or greater than" << currency.minMixin();
+        throw std::system_error(make_error_code(CryptoNote::error::MIXIN_COUNT_TOO_SMALL));
+    }
+    if (mixin > currency.maxMixin()) {
+        logger(Logging::WARNING, Logging::BRIGHT_YELLOW) << "Mixin must be equal to or less than" << currency.maxMixin();
+        throw std::system_error(make_error_code(CryptoNote::error::MIXIN_COUNT_TOO_LARGE));
+    }
 }
 
 void validateAddresses(const std::vector<std::string>& addresses, const CryptoNote::Currency& currency, Logging::LoggerRef logger) {
@@ -779,6 +792,8 @@ std::error_code WalletService::sendTransaction(const SendTransaction::Request& r
     if (!request.changeAddress.empty()) {
       validateAddresses({ request.changeAddress }, currency, logger);
     }
+
+  validateMixin(request.anonymity, currency, logger);
 
     CryptoNote::TransactionParameters sendParams;
     if (!request.paymentId.empty()) {

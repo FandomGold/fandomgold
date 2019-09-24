@@ -1,22 +1,18 @@
-// {DRGL} Kills White Walkers
-// 2018 {DRÆGONGLASS}
-//
-// <https://www.ZirtysPerzys.org>
 // Copyright (c) 2012-2016, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2016-2018, The Karbowanec developers
-// Copyright (c) 2018-2019, The DRAGONGLASS developers
+// Copyright (c) 2018-2019, The Fandom Gold developers
 //
-// This file is part of DRAGONGLASS.
-// DRAGONGLASS is free software: you can redistribute it and/or modify
+// This file is part of Fandom Gold.
+// Fandom Gold is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// DRAGONGLASS is distributed in the hope that it will be useful,
+// Fandom Gold is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
 // You should have received a copy of the GNU Lesser General Public License
-// along with DRAGONGLASS.  If not, see <http://www.gnu.org/licenses/>.
+// along with Fandom Gold.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
@@ -71,6 +67,9 @@ public:
   size_t blockGrantedFullRewardZone() const { return m_blockGrantedFullRewardZone; }
   size_t blockGrantedFullRewardZoneByBlockVersion(uint8_t blockMajorVersion) const;
   size_t minerTxBlobReservedSize() const { return m_minerTxBlobReservedSize; }
+
+  size_t minMixin() const { return m_minMixin; }
+  size_t maxMixin() const { return m_maxMixin; }
 
   size_t numberOfDecimalPlaces() const { return m_numberOfDecimalPlaces; }
   uint64_t coin() const { return m_coin; }
@@ -195,6 +194,9 @@ private:
   size_t m_numberOfDecimalPlaces;
   uint64_t m_coin;
 
+  size_t m_minMixin;
+  size_t m_maxMixin;
+
   uint64_t m_mininumFee;
   uint64_t m_defaultDustThreshold;
 
@@ -223,6 +225,8 @@ private:
   uint32_t m_upgradeHeightV4;
   uint32_t m_upgradeHeightV5;
   uint32_t m_upgradeHeightV6;
+  uint32_t m_upgradeHeightV7;
+
   unsigned int m_upgradeVotingThreshold;
   uint32_t m_upgradeVotingWindow;
   uint32_t m_upgradeWindow;
@@ -276,6 +280,9 @@ public:
   CurrencyBuilder& rewardBlocksWindow(size_t val) { m_currency.m_rewardBlocksWindow = val; return *this; }
   CurrencyBuilder& blockGrantedFullRewardZone(size_t val) { m_currency.m_blockGrantedFullRewardZone = val; return *this; }
   CurrencyBuilder& minerTxBlobReservedSize(size_t val) { m_currency.m_minerTxBlobReservedSize = val; return *this; }
+  
+  CurrencyBuilder& minMixin(size_t val) { m_currency.m_minMixin = val; return *this; }
+  CurrencyBuilder& maxMixin(size_t val) { m_currency.m_maxMixin = val; return *this; }
 
   CurrencyBuilder& numberOfDecimalPlaces(size_t val);
 
@@ -307,6 +314,8 @@ public:
   CurrencyBuilder& upgradeHeightV4(uint64_t val) { m_currency.m_upgradeHeightV4 = static_cast<uint32_t>(val); return *this; }
   CurrencyBuilder& upgradeHeightV5(uint64_t val) { m_currency.m_upgradeHeightV5 = static_cast<uint32_t>(val); return *this; }
   CurrencyBuilder& upgradeHeightV6(uint64_t val) { m_currency.m_upgradeHeightV6 = static_cast<uint32_t>(val); return *this; }
+  CurrencyBuilder& upgradeHeightV7(uint64_t val) { m_currency.m_upgradeHeightV7 = static_cast<uint32_t>(val); return *this; }
+
   CurrencyBuilder& upgradeVotingThreshold(unsigned int val);
   CurrencyBuilder& upgradeVotingWindow(size_t val) { m_currency.m_upgradeVotingWindow = static_cast<uint32_t>(val); return *this; }
   CurrencyBuilder& upgradeWindow(size_t val);
@@ -324,4 +333,3 @@ private:
 };
 
 }
-

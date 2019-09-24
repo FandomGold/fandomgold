@@ -1,14 +1,9 @@
-// {DRGL} Kills White Walkers
-//
-// 2018 {DRÆGONGLASS}
-// <https://www.ZirtysPerzys.org>
-//
 // Copyright (c) 2012-2016, The CryptoNote developers, The Bytecoin developers, The Karbovanets developers
 // Copyright (c) 2014-2016, XDN developers
 // Copyright (c) 2014-2017, The Forknote developers
 // Copyright (c) 2014-2017, The Monero Project
 // Copyright (c) 2016-2018, The Karbo developers
-// Copyright (c) 2017-2018, DRÆGONGLASS developers
+// Copyright (c) 2017-2019, Fandom Gold developers
 //
 // All rights reserved.
 // 
@@ -224,6 +219,17 @@ struct TransferCommand {
         logger(ERROR, BRIGHT_RED) << "mixin_count should be non-negative integer, got " << mixin_str;
         return false;
       }
+          if (fake_outs_count < m_currency.minMixin() && fake_outs_count != 0) {
+          logger(ERROR, BRIGHT_RED) << "mixIn should be equal to or greater than " << m_currency.minMixin();
+          return false;
+      }
+
+      if (fake_outs_count > m_currency.maxMixin()) {
+          logger(ERROR, BRIGHT_RED) << "mixIn should be equal to or less than " << m_currency.maxMixin();
+          return false;
+      }
+
+
 
       while (!ar.eof()) {
 
@@ -1291,7 +1297,7 @@ bool simple_wallet::gen_wallet(const std::string &wallet_file, const std::string
 
 	success_msg_writer() <<
 		"**********************************************************************\n" <<
-		"Your wallet has been generated.\n" <<
+		"Your Fandom GOLD wallet has been generated.\n" <<
 		"To start synchronizing with the daemon use \"refresh\" command.\n" <<
 		"Use \"help\" command to see the list of available commands.\n" <<
 		"Always use \"exit\" command when closing simplewallet to save\n" <<
@@ -1369,7 +1375,7 @@ bool simple_wallet::new_wallet(const std::string &wallet_file, const std::string
 
 	success_msg_writer() <<
 		"**********************************************************************\n" <<
-		"Your wallet has been generated.\n" <<
+		"Your Fandom GOLD wallet has been generated.\n" <<
 		"Use \"help\" command to see the list of available commands.\n" <<
 		"Always use \"exit\" command when closing simplewallet to save\n" <<
 		"current session's state. Otherwise, you will possibly need to synchronize \n" <<
@@ -1430,7 +1436,7 @@ bool simple_wallet::new_wallet(Crypto::SecretKey &secret_key, Crypto::SecretKey 
 
   success_msg_writer() <<
     "**********************************************************************\n" <<
-    "Your wallet has been imported.\n" <<
+    "Your Fandom GOLD wallet has been imported.\n" <<
     "Use \"help\" command to see the list of available commands.\n" <<
     "Always use \"exit\" command when closing simplewallet to save\n" <<
     "current session's state. Otherwise, you may need to synchronize \n" <<
@@ -1482,7 +1488,7 @@ bool simple_wallet::new_wallet(AccountKeys &private_key, const std::string &wall
 
     success_msg_writer() <<
         "**********************************************************************\n" <<
-        "Your wallet has been imported.\n" <<
+        "Your Fandom GOLD wallet has been imported.\n" <<
         "Use \"help\" command to see the list of available commands.\n" <<
         "Always use \"exit\" command when closing simplewallet to save\n" <<
         "current session's state. Otherwise, you may need to synchronize \n" <<
@@ -1532,7 +1538,7 @@ bool simple_wallet::new_tracking_wallet(AccountKeys &tracking_key, const std::st
 
     success_msg_writer() <<
         "**********************************************************************\n" <<
-        "Your tracking wallet has been imported. It doesn't allow spending funds.\n" <<
+        "Your Fandom GOLD TRACKING wallet has been imported. It doesn't allow spending funds.\n" <<
         "It allows you to view incoming transactions but not outgoing ones. \n" <<
         "If there were spendings, total balance will be inaccurate. \n" <<
         "Use \"help\" command to see the list of available commands.\n" <<
@@ -2074,7 +2080,7 @@ bool simple_wallet::transfer(const std::vector<std::string> &args) {
 
     CryptoNote::TransactionId tx = m_wallet->sendTransaction(cmd.dsts, cmd.fee, extraString, cmd.fake_outs_count, 0);
     if (tx == WALLET_LEGACY_INVALID_TRANSACTION_ID) {
-      fail_msg_writer() << "Can't send DRGL";
+      fail_msg_writer() << "Can't send XDG";
       return true;
     }
 
@@ -2088,7 +2094,7 @@ bool simple_wallet::transfer(const std::vector<std::string> &args) {
 
     CryptoNote::WalletLegacyTransaction txInfo;
     m_wallet->getTransaction(tx, txInfo);
-    success_msg_writer(true) << "DRGL successfully sent, transaction id: " << Common::podToHex(txInfo.hash) << ", key: " << Common::podToHex(txInfo.secretKey);
+    success_msg_writer(true) << "XDG successfully sent, transaction id: " << Common::podToHex(txInfo.hash) << ", key: " << Common::podToHex(txInfo.secretKey);
 
     try {
       CryptoNote::WalletHelper::storeWallet(*m_wallet, m_wallet_file);

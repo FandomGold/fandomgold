@@ -1,24 +1,22 @@
-// 2019 {DRÆGONGLASS}
-// <https://www.ZirtysPerzys.org>
 // Copyright (c) 2012-2016, The CryptoNote developers 
 // Copyright (c) 2012-2016, The Bytecoin developers
 // Copyright (c) 2014-2018, The Monero project
 // Copyright (c) 2014-2018, The Forknote developers
 // Copyright (c) 2016-2019, The Karbowanec developers
 // Copyright (c) 2018-2019, The Ryo Currency developers
-// Copyright (c) 2017-2019, The DRAGONGLASS Developers
+// Copyright (c) 2017-2019, The Fandom GOLD Developers
 //
-// This file is part of DRÆGONGLASS.
-// DRÆGONGLASS is free software: you can redistribute it and/or modify
+// This file is part of Fandom GOLD.
+// FandomG OLD is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// DRÆGONGLASS is distributed in the hope that it will be useful,
+// Fandom GOLD is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
 // You should have received a copy of the GNU Lesser General Public License
-// along with DRÆGONGLASS.  If not, see <http://www.gnu.org/licenses/>.
+// along with Fandom GOLD.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
@@ -29,11 +27,12 @@ namespace CryptoNote {
 namespace parameters {
 
 
-const uint64_t DIFFICULTY_TARGET                             = 81;//sec   **increase to 480; sec (8 min)
+
+const uint64_t DIFFICULTY_TARGET                             = 81;//sec    **increase to 480; sec (8 min)
 const uint64_t CRYPTONOTE_MAX_BLOCK_NUMBER                   = 500000000;
 const size_t   CRYPTONOTE_MAX_BLOCK_BLOB_SIZE                = 500000000;
 const size_t   CRYPTONOTE_MAX_TX_SIZE                        = 1000000000;
-const uint64_t CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX       = 679385; // all public addresses begin w/ "dRGL"
+const uint64_t CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX       = 679385; // all public addresses begin w/ "dRGL" (872372 = XDG/XDG1)
 const size_t   CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW          = 60;
   
 const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT            = 60 * 60 * 2;
@@ -62,10 +61,12 @@ const size_t   DIFFICULTY_WINDOW_V3                          = 60;  // blocks
 
 const uint64_t MINIMUM_FEE                                   = UINT64_C(800000);
 const uint64_t DEFAULT_DUST_THRESHOLD                        = UINT64_C(8000);
+
+const uint64_t MIN_TX_MIXIN_SIZE                             =  2;
 const uint64_t MAX_TX_MIXIN_SIZE                             = 18;
 
-const size_t   DIFFICULTY_CUT                                = 60;  // deprecated
-const size_t   DIFFICULTY_LAG                                = 15;  // deprec
+const size_t   DIFFICULTY_CUT                                = 60;  // v1
+const size_t   DIFFICULTY_LAG                                = 15;  // v1
 static_assert(2 * DIFFICULTY_CUT <= DIFFICULTY_WINDOW - 2, "Bad DIFFICULTY_WINDOW or DIFFICULTY_CUT");
 
 static constexpr uint64_t POISSON_CHECK_TRIGGER = 10; // Reorg size that triggers poisson timestamp check
@@ -92,6 +93,7 @@ const uint32_t UPGRADE_HEIGHT_V3                             = 154321; //{Longcl
 const uint32_t UPGRADE_HEIGHT_V4                             = 300000; //{Dracarys}
 const uint32_t UPGRADE_HEIGHT_V5                             = 324819; //{Ironborn}  CN7  (variant1) 
 const uint32_t UPGRADE_HEIGHT_V6                             = 345678; //{Ice&fire}  CN8  (variant2)
+const uint32_t UPGRADE_HEIGHT_V7                             = 615000; //FandomGOLD
   
 const unsigned UPGRADE_VOTING_THRESHOLD                      = 90; // percent
 const uint32_t UPGRADE_VOTING_WINDOW                         = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;  // blocks
@@ -108,7 +110,7 @@ const char     CRYPTONOTE_BLOCKCHAIN_INDICES_FILENAME[]      = "blockchainindice
 const char     MINER_CONFIG_FILE_NAME[]                      = "miner_conf.json";
 } // parameters
 
-const char     CRYPTONOTE_NAME[]                             = "dragonglass"; // "fango";
+const char     CRYPTONOTE_NAME[]                             = "dragonglass"; 
 const char     GENESIS_COINBASE_TX_HEX[]                     = "013c01ff0001b4bcc29101029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd0880712101bd4e0bf284c04d004fd016a21405046e8267ef81328cabf3017c4c24b273b25a";
 
 const uint8_t  CURRENT_TRANSACTION_VERSION                   =  1;
@@ -118,6 +120,7 @@ const uint8_t  BLOCK_MAJOR_VERSION_3                         =  3;
 const uint8_t  BLOCK_MAJOR_VERSION_4                         =  4;
 const uint8_t  BLOCK_MAJOR_VERSION_5                         =  5;
 const uint8_t  BLOCK_MAJOR_VERSION_6                         =  6;
+const uint8_t  BLOCK_MAJOR_VERSION_7                         =  7;
 const uint8_t  BLOCK_MINOR_VERSION_0                         =  0;
 const uint8_t  BLOCK_MINOR_VERSION_1                         =  1;
 

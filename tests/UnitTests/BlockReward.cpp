@@ -1,21 +1,17 @@
-// {DRGL} Kills White Walkers
-// 2018 {DRÆGONGLASS}
-//
-// <https://www.ZirtysPerzys.org>
 // Copyright (c) 2012-2016, The CryptoNote developers, The Bytecoin developers
-// Copyright (c) 2018-2019, The DRAGONGLASS developers
+// Copyright (c) 2018-2019, The FandomGOLD developers
 //
-// This file is part of DRAGONGLASS.
-// DRAGONGLASS is free software: you can redistribute it and/or modify
+// This file is part of FandomGOLD.
+// FandomGOLD is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// DRAGONGLASS is distributed in the hope that it will be useful,
+// FandomGOLD is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
 // You should have received a copy of the GNU Lesser General Public License
-// along with DRAGONGLASS.  If not, see <http://www.gnu.org/licenses/>.
+// along with FandomGOLD.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "gtest/gtest.h"
 
@@ -192,13 +188,13 @@ namespace
     static const uint64_t alreadyGeneratedCoins = 0;
 
     virtual void SetUp() override {
-       m_blockTooBig = !m_currency.getBlockReward(BLOCK_MAJOR_VERSION_6, testMedian, 0, alreadyGeneratedCoins, 0, m_standardBlockReward, m_emissionChange); 
+       m_blockTooBig = !m_currency.getBlockReward(BLOCK_MAJOR_VERSION_7, testMedian, 0, alreadyGeneratedCoins, 0, m_standardBlockReward, m_emissionChange); 
       ASSERT_FALSE(m_blockTooBig);
       ASSERT_EQ(UINT64_C(70368744177663), m_standardBlockReward);
     }
 
     void do_test(size_t currentBlockSize) {
-       m_blockTooBig = !m_currency.getBlockReward(BLOCK_MAJOR_VERSION_6, testMedian, currentBlockSize, alreadyGeneratedCoins, 0, m_blockReward, m_emissionChange);     }
+       m_blockTooBig = !m_currency.getBlockReward(BLOCK_MAJOR_VERSION_7, testMedian, currentBlockSize, alreadyGeneratedCoins, 0, m_blockReward, m_emissionChange);     }
 
     Logging::LoggerGroup m_logger;
     CryptoNote::Currency m_currency;
@@ -294,7 +290,7 @@ namespace
       uint64_t blockReward;
       int64_t emissionChange;
 
-       m_blockTooBig = !m_currency.getBlockReward(BLOCK_MAJOR_VERSION_6, testMedian, testBlockSize, 0, 0, blockReward, emissionChange); 
+       m_blockTooBig = !m_currency.getBlockReward(BLOCK_MAJOR_VERSION_7, testMedian, testBlockSize, 0, 0, blockReward, emissionChange); 
       
       ASSERT_FALSE(m_blockTooBig);
       ASSERT_EQ(expectedBlockReward, blockReward);
@@ -302,7 +298,7 @@ namespace
     }
 
     void do_test(uint64_t alreadyGeneratedCoins, uint64_t fee, bool penalizeFee) {
-       uint8_t blockMajorVersion = penalizeFee ? BLOCK_MAJOR_VERSION_6 : BLOCK_MAJOR_VERSION_1; 
+       uint8_t blockMajorVersion = penalizeFee ? BLOCK_MAJOR_VERSION_7 : BLOCK_MAJOR_VERSION_1; 
       m_blockTooBig = !m_currency.getBlockReward(blockMajorVersion, testMedian, testBlockSize, alreadyGeneratedCoins, fee, m_blockReward, m_emissionChange);
     }
 

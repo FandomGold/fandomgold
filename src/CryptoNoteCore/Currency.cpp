@@ -1,23 +1,19 @@
-// {DRGL} Kills White Walkers
-
-// 2018 {DRÆGONGLASS}
-// <https://www.ZirtysPerzys.org>
 // Copyright (c) 2012-2016, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2016-2018, zawy12
 // Copyright (c) 2016-2018, The Karbowanec developers
-// Copyright (c) 2018-2019  The DRAGONGLASS developers
+// Copyright (c) 2018-2019  The Fandom Gold developers
 //
-// This file is part of DRAGONGLASS.
-// DRAGONGLASS is free software: you can redistribute it and/or modify
+// This file is part of Fandom Gold.
+// Fandom Gold is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// DRAGONGLASS is distributed in the hope that it will be useful,
+// Fandom Gold is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
 // You should have received a copy of the GNU Lesser General Public License
-// along with DRAGONGLASS.  If not, see <http://www.gnu.org/licenses/>.
+// along with Fandom Gold.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Currency.h"
 #include <cctype>
@@ -81,7 +77,8 @@ namespace CryptoNote {
 			m_upgradeHeightV3 = 1;
 			m_upgradeHeightV4 = 2;	
 			m_upgradeHeightV5 = 8;
-			m_upgradeHeightV6 = 80;	
+			m_upgradeHeightV6 = 10;	
+			m_upgradeHeightV7 = 18;	
 			m_blocksFileName = "testnet_" + m_blocksFileName;
 			m_blocksCacheFileName = "testnet_" + m_blocksCacheFileName;
 			m_blockIndexesFileName = "testnet_" + m_blockIndexesFileName;
@@ -147,6 +144,9 @@ namespace CryptoNote {
 		}
 		else if (majorVersion == BLOCK_MAJOR_VERSION_6) {
 			return m_upgradeHeightV6;
+		}
+		else if (majorVersion == BLOCK_MAJOR_VERSION_7) {
+			return m_upgradeHeightV7;
 		}
 		else {
 			return static_cast<uint32_t>(-1);
@@ -726,6 +726,8 @@ namespace CryptoNote {
 		case BLOCK_MAJOR_VERSION_4:
 		case BLOCK_MAJOR_VERSION_5:
 		case BLOCK_MAJOR_VERSION_6:
+		case BLOCK_MAJOR_VERSION_7:
+
 			return checkProofOfWorkV2(context, block, currentDiffic, proofOfWork);
 		}
 
@@ -777,6 +779,9 @@ namespace CryptoNote {
 		blockGrantedFullRewardZone(parameters::CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE);
 		minerTxBlobReservedSize(parameters::CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE);
 
+		minMixin(parameters::MIN_TX_MIXIN_SIZE);
+		maxMixin(parameters::MAX_TX_MIXIN_SIZE);
+
 		numberOfDecimalPlaces(parameters::CRYPTONOTE_DISPLAY_DECIMAL_POINT);
 
 		mininumFee(parameters::MINIMUM_FEE);
@@ -807,6 +812,8 @@ namespace CryptoNote {
 		upgradeHeightV4(parameters::UPGRADE_HEIGHT_V4);
 		upgradeHeightV5(parameters::UPGRADE_HEIGHT_V5);
 		upgradeHeightV6(parameters::UPGRADE_HEIGHT_V6);
+		upgradeHeightV7(parameters::UPGRADE_HEIGHT_V7);
+
 
 		upgradeVotingThreshold(parameters::UPGRADE_VOTING_THRESHOLD);
 		upgradeVotingWindow(parameters::UPGRADE_VOTING_WINDOW);
