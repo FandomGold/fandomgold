@@ -4,7 +4,7 @@
 // Copyright (c) 2014-2018, The Forknote developers
 // Copyright (c) 2016-2019, The Karbowanec developers
 // Copyright (c) 2018-2019, The Ryo Currency developers
-// Copyright (c) 2017-2019, The Fandom GOLD Developers
+// Copyright (c) 2017-2019, The Fandom GOLD project
 //
 // This file is part of Fandom GOLD.
 // FandomG OLD is free software: you can redistribute it and/or modify
@@ -28,11 +28,12 @@ namespace parameters {
 
 
 
-const uint64_t DIFFICULTY_TARGET                             = 81;//sec    **increase to 480; sec (8 min)
+const uint64_t DIFFICULTY_TARGET                             = 480; //Fandom Gold
+const uint64_t DIFFICULTY_TARGET_V1                          = 81; //Dragonglass
 const uint64_t CRYPTONOTE_MAX_BLOCK_NUMBER                   = 500000000;
 const size_t   CRYPTONOTE_MAX_BLOCK_BLOB_SIZE                = 500000000;
 const size_t   CRYPTONOTE_MAX_TX_SIZE                        = 1000000000;
-const uint64_t CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX       = 679385; // all public addresses begin w/ "dRGL" (872372 = XDG/XDG1)
+const uint64_t CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX       = 679385; // all public addresses begin w/ "dRGL" (if fg =7015)
 const size_t   CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW          = 60;
   
 const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT            = 60 * 60 * 2;
@@ -58,11 +59,13 @@ const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY             = 24 * 60 * 60 / DI
 const size_t   DIFFICULTY_WINDOW                             = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY; // blocks
 const size_t   DIFFICULTY_WINDOW_V2                          = 18;  // blocks
 const size_t   DIFFICULTY_WINDOW_V3                          = 60;  // blocks
+const size_t   DIFFICULTY_WINDOW_V4                          = 20;  // blocks
+
 
 const uint64_t MINIMUM_FEE                                   = UINT64_C(800000);
 const uint64_t DEFAULT_DUST_THRESHOLD                        = UINT64_C(8000);
 
-const uint64_t MIN_TX_MIXIN_SIZE                             =  2;
+const uint64_t MIN_TX_MIXIN_SIZE                             =  8;
 const uint64_t MAX_TX_MIXIN_SIZE                             = 18;
 
 const size_t   DIFFICULTY_CUT                                = 60;  // v1
@@ -93,7 +96,7 @@ const uint32_t UPGRADE_HEIGHT_V3                             = 154321; //{Longcl
 const uint32_t UPGRADE_HEIGHT_V4                             = 300000; //{Dracarys}
 const uint32_t UPGRADE_HEIGHT_V5                             = 324819; //{Ironborn}  CN7  (variant1) 
 const uint32_t UPGRADE_HEIGHT_V6                             = 345678; //{Ice&fire}  CN8  (variant2)
-const uint32_t UPGRADE_HEIGHT_V7                             = 615000; //FandomGOLD
+const uint32_t UPGRADE_HEIGHT_V7                             = 800000; // place holder
   
 const unsigned UPGRADE_VOTING_THRESHOLD                      = 90; // percent
 const uint32_t UPGRADE_VOTING_WINDOW                         = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;  // blocks
@@ -110,7 +113,7 @@ const char     CRYPTONOTE_BLOCKCHAIN_INDICES_FILENAME[]      = "blockchainindice
 const char     MINER_CONFIG_FILE_NAME[]                      = "miner_conf.json";
 } // parameters
 
-const char     CRYPTONOTE_NAME[]                             = "dragonglass"; 
+const char     CRYPTONOTE_NAME[]                             = "fandomgold"; 
 const char     GENESIS_COINBASE_TX_HEX[]                     = "013c01ff0001b4bcc29101029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd0880712101bd4e0bf284c04d004fd016a21405046e8267ef81328cabf3017c4c24b273b25a";
 
 const uint8_t  CURRENT_TRANSACTION_VERSION                   =  1;
@@ -121,6 +124,7 @@ const uint8_t  BLOCK_MAJOR_VERSION_4                         =  4;
 const uint8_t  BLOCK_MAJOR_VERSION_5                         =  5;
 const uint8_t  BLOCK_MAJOR_VERSION_6                         =  6;
 const uint8_t  BLOCK_MAJOR_VERSION_7                         =  7;
+
 const uint8_t  BLOCK_MINOR_VERSION_0                         =  0;
 const uint8_t  BLOCK_MINOR_VERSION_1                         =  1;
 

@@ -161,8 +161,6 @@ namespace CryptoNote {
      bool f_getMixin(const Transaction& transaction, uint64_t& mixin);
 
 
-     uint8_t getBlockMajorVersionForHeight(uint32_t height) const;
-
    private:
      bool add_new_tx(const Transaction& tx, const Crypto::Hash& tx_hash, size_t blob_size, tx_verification_context& tvc, bool keeped_by_block);
      bool load_state_data();
