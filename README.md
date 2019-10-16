@@ -1,26 +1,23 @@
-##### Master Status
+<h1><img title="Unlock the Power of Fandom" src="https://avatars2.githubusercontent.com/u/55260556?s=200&v=4"><img/></h1>
 
-[![Build Status](https://travis-ci.org/ZirtysPerzys/dragonglass.svg?branch=master)](https://travis-ci.org/ZirtysPerzys/dragonglass)
-<p align="right"><a href="https://zirtysperzys.org">Website</a><p align="right">
-<p align="right"><a href="https://drgl.info">ChainXplore</a><p align="right">
-<p align="right"><a href="https://drgl.online">ÆJTs Pool</a><p align="right">
-<p align="right"><a href="https://crypto9coin.cf/drgl">Pxckets Pool</a><p align="right">
-<p align="right"><a href="https://drgl.cool-pool.net/">CoolPool</a><p align="right">
-<h1 align="center"><img title="The Long Night Is Coming" src="https://raw.githubusercontent.com/ZirtysPerzys/DRGL-X/master/images/DRGL/DRGLdragonglass.png" width="200" height="200" ><img/></h1>
+## The FANDOM GOLD Project 
 
-<h2 align="center">⟬⟬⟬⟬ DRAGONGLASS ⟭⟭⟭⟭<h2 align="center">
+### Private P2P Crypto Currency based on the CryptoNote protocol.
 
-<p align="center">Rare Private Cryptocurrency <p align="center">
-........that kills white walkers.
-
-
-
-
+* <p align="left"><a href="https://fandom.gold">Website</a><p align="left">
+* <p align="left"><a href="https://drgl.info">Explorer</a><p align="left">
  
- 
+ ______________________________
 
 
+##### Master Status   
 
+[![Build Status](https://travis-ci.org/FandomGold/fandomgold.svg?branch=master)](https://travis-ci.org/FandomGold/fandomgold) 
+
+<sup>*"Working software is the primary measure of progress."* [‣]</sup>
+
+
+[‣]:http://agilemanifesto.org/
 
 #### Building On *nix
 
@@ -39,39 +36,34 @@ executing the following command.
  sudo apt-get install build-essential git cmake libboost-all-dev
 ```
 
-2. Clone DRGL repository
+2. Clone Fandom Gold repository
 ```
-git clone https://github.com/ZirtysPerzys/dragonglass
+git clone https://github.com/FandomGold/fandomgold
 ```
 3. Open folder with copied repository
+```
+cd fandomgold
+```
+4. Building (Compiling) Execute the following command to compile
 
-`cd dragonglass`
+    (resulting programs will be found in build/release/src)
 
-4. Building (Compiling)
-
-*** Execute the following command to compile
-`
+```
 make -j4  
-`
+```
 
-The resulting executables can be found in build/release/src.
+5. Starting Fandom Gold daemon
+```
+cd fandomgold/build/release/src `
+./fandomgold
+````
+try --help from within dæmon for a full list of available commands
+or <code>./fandomgold --help</code> when outside of dæmon 
+_________________________________________________________
+For the most user-friendly graphical interface experience
 
-
-5. Starting dragonglass daemon
-`
-cd dragonglass/build/release/src 
-`
-
-*** Start daemon, by typing the following command-
-`
-./dragonglassd 
-`
-for a list of commands in dæmon type  --help
-
-
-
-alternatively, &/or also see the [{DRGL} GUI Wallet](https://github.com/ZirtysPerzys/DRGL)
-
+the [Gold Wallet](https://github.com/fandomgold/goldwallet) is recommended. 
+_________________________________________________________
 
 _________________________________________________________
 **Advanced options:**
@@ -99,61 +91,60 @@ cmake -G "Visual Studio 12 Win64" ..
 And then do Build.
 ________________
 
+****Quick step by step tutorial using a Bash terminal on Windows 10****
 
-*courtesy of Sir {WindowSlayer} Galapagos*
-
-
-On windows 10
-Quick step by step tutorial
-
-
-Activate the Bash terminal as shown in this tutorial
 https://www.windowscentral.com/how-install-bash-shell-command-line-windows-10
 
+*(courtesy of & gratitude to Sir WindowSlayer of Galapagos)*
 
-Start a Bash window and do as follow
+Start a Bash window and do as follows
 
 1:Go to root
+```
 cd
-
+```
 2: Run updates and install dependencies
+```
 sudo apt-get update
 sudo apt-get install build-essential git cmake libboost-all-dev
-
-3: Git clone
-git clone https://github.com/ZirtysPerzys/dragonglass.git
-
+```
+3: Grab the Fandom Gold files from Github repository
+```
+git clone https://github.com/FandomGold/fandomgold.git
+```
 4: Build the files
-cd dragonglass
+```
+cd fandomgold
 make
-
-5: Sync blocks
+```
+5: Start client and begin syncing blockchain
+```
 cd build/release/src/
-./dragonglassd
+./fandomgold
+```
+*!!keep this terminal running and open new terminal for next step!!*
 
-!!keep this terminal running and open new terminal for next step!!
-
-6: Start simplewallet and create wallet (navigate to the folder where you created the wallet)
-~dragonglass/build/release/src$ ./simplewallet
+6: Start simplewallet and create your new wallet (navigate to the folder where you created the wallet)
+```
+~fandomgold/build/release/src$ ./simplewallet
+```
 or
-cd dragonglass/build/release/src
+```
+cd fandomgold/build/release/src
 ./simplewallet
+```
+set up your wallet name & password
 
-set up wallet name & password
-then start mining in wallet
-start_mining <number_of_threads>
+then use "help" in wallet for a list of all available commands
 
-use "help" in wallet to check other commands
-
-!!Remember you have to use linux command in Bash
+*!!Remember you have to use linux command in Bash*
 
 You'll find your folders and wallet in
 C:\Users\YOURUSERNAME\AppData\Local\lxss\home
 
 **************************************************
 
-
-### Building for Android on Linux
+### Build for Android on Linux
 
 Set up the 32 bit toolchain
 Download and extract the Android SDK and NDK
@@ -176,7 +167,7 @@ export PATH=/opt/android/tool32/arm-linux-androideabi/bin:/opt/android/tool32/bi
 ./b2 abi=aapcs architecture=arm binary-format=elf address-model=32 link=static runtime-link=static --with-chrono --with-date_time --with-filesystem --with-program_options --with-regex --with-serialization --with-system --with-thread --with-context --with-coroutine --with-atomic --build-dir=android32 --stagedir=android32 toolset=clang threading=multi threadapi=pthread target-os=android --reconfigure stage
 ```
 
-Build {XDG} for 32 bit Android
+Build Fandom Gold for 32 bit Android
 ```
 mkdir -p build/release.android32
 cd build/release.android32
@@ -184,4 +175,3 @@ CC=clang CXX=clang++ cmake -D BUILD_TESTS=OFF -D ARCH="armv7-a" -ldl -D STATIC=O
 make SimpleWallet
 ```
 **************************************************
-
