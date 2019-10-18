@@ -1000,7 +1000,7 @@ bool TransfersContainer::isSpendTimeUnlocked(uint64_t unlockTime) const {
   } else {
     //interpret as time
     uint64_t current_time = static_cast<uint64_t>(time(NULL));
-    return current_time + m_currency.lockedTxAllowedDeltaSeconds() >= unlockTime;
+    return current_time + m_currency.lockedTxAllowedDeltaSeconds_v2() >= unlockTime;
   }
 
   return false;

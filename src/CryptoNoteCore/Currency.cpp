@@ -1,7 +1,7 @@
 // Copyright (c) 2012-2016, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2016-2018, zawy12
 // Copyright (c) 2016-2018, The Karbowanec developers
-// Copyright (c) 2018-2019  The Fandom Gold developers
+// Copyright (c) 2018-2019  The Fandom Gold Project
 //
 // This file is part of Fandom Gold.
 // Fandom Gold is free software: you can redistribute it and/or modify
@@ -418,7 +418,10 @@ namespace CryptoNote {
 	difficulty_type Currency::nextDifficulty(uint32_t height, uint8_t blockMajorVersion, std::vector<uint64_t> timestamps,
 		std::vector<difficulty_type> cumulativeDifficulties) const {
 
-		if (blockMajorVersion >= BLOCK_MAJOR_VERSION_4) {
+		if (blockMajorVersion >= BLOCK_MAJOR_VERSION_7) {
+			return nextDifficultyV5(height, blockMajorVersion, timestamps, cumulativeDifficulties);
+		}
+		else if (blockMajorVersion >= BLOCK_MAJOR_VERSION_4) {
 			return nextDifficultyV4(height, blockMajorVersion, timestamps, cumulativeDifficulties);
 		}
 		else if (blockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
@@ -471,7 +474,7 @@ namespace CryptoNote {
 		assert(totalWork > 0);
 
 		uint64_t low, high;
-		low = mul128(totalWork, m_difficultyTarget, &high);
+		low = mul128(totalWork, m_difficultyTarget_DRGL, &high);
 		if (high != 0 || low + timeSpan - 1 < low) {
 			return 0;
 		}
@@ -516,7 +519,7 @@ namespace CryptoNote {
 		// uint64_t nextDiffZ = totalWork * m_difficultyTarget / timeSpan; 
 
 		uint64_t low, high;
-		low = mul128(totalWork, m_difficultyTarget, &high);
+		low = mul128(totalWork, m_difficultyTarget_DRGL, &high);
 		// blockchain error "Difficulty overhead" if this function returns zero
 		if (high != 0) {
 			return 0;
@@ -545,7 +548,7 @@ namespace CryptoNote {
 		// T= target_solvetime;
 		// N = int(45 * (600 / T) ^ 0.3));
 
-		const int64_t T = static_cast<int64_t>(m_difficultyTarget);
+		const int64_t T = static_cast<int64_t>(m_difficultyTarget_DRGL);
 		size_t N = CryptoNote::parameters::DIFFICULTY_WINDOW_V3;
 
 		// return a difficulty of 1 for first 3 blocks if it's the start of the chain
@@ -605,11 +608,11 @@ namespace CryptoNote {
 			// https://github.com/zawy12/difficulty-algorithms/issues/3
 			// See commented version for explanations & required config file changes. Fix FTL and MTP!
 
-			   const uint64_t T = CryptoNote::parameters::DIFFICULTY_TARGET;
+			   const uint64_t T = CryptoNote::parameters::DIFFICULTY_TARGET_DRGL;
 			   uint64_t N = CryptoNote::parameters::DIFFICULTY_WINDOW_V3; // N=60, 90, and 120 for T=600, 120, 60.
 			   uint64_t  L(0), next_D, i, this_timestamp(0), previous_timestamp(0), avg_D;
 			   uint32_t Dracarys = CryptoNote::parameters::UPGRADE_HEIGHT_V4;
-	   		   uint64_t difficulty_plate = 10000000;
+	   		   uint64_t difficulty_plate = 10000;
 	   		   
 			   assert(timestamps.size() == cumulativeDifficulties.size() && timestamps.size() <= static_cast<uint64_t>(N + 1));
 
@@ -661,6 +664,72 @@ namespace CryptoNote {
 
 			   return  next_D;
 	}
+
+		difficulty_type Currency::nextDifficultyV5(uint32_t height, uint8_t blockMajorVersion,
+		std::vector<std::uint64_t> timestamps, std::vector<difficulty_type> cumulativeDifficulties) const {
+			
+			// LWMA-1 difficulty algorithm 
+			// Copyright (c) 2017-2018 Zawy, MIT License
+			// https://github.com/zawy12/difficulty-algorithms/issues/3
+			// See commented version for explanations & required config file changes. Fix FTL and MTP!
+			   
+			   const uint64_t T = CryptoNote::parameters::DIFFICULTY_TARGET;
+			   uint64_t N = CryptoNote::parameters::DIFFICULTY_WINDOW_V4; // N=60, 90, and 120 for T=600, 120, 60.
+			   uint64_t  L(0), next_D, i, this_timestamp(0), previous_timestamp(0), avg_D;
+			   uint32_t Fang = CryptoNote::parameters::UPGRADE_HEIGHT_V7;
+	   		   uint64_t difficulty_plate = 10000;
+	   		   
+			   assert(timestamps.size() == cumulativeDifficulties.size() && timestamps.size() <= static_cast<uint64_t>(N + 1));
+
+			   // If it's a new coin, do startup code. Do not remove in case other coins copy your code.
+			   // uint64_t difficulty_guess = 10000;
+			   // if (timestamps.size() <= 12 ) {   return difficulty_guess;   }
+			   // if ( timestamps.size()  < N +1 ) { N = timestamps.size()-1;  }
+			   // If hashrate/difficulty ratio after a fork is < 1/3 prior ratio, hardcode D for N+1 blocks after fork. 
+			   // This will also cover up a very common type of backwards-incompatible fork.
+			   // difficulty_guess = 10000; //  Dev may change.  Guess lower than anything expected.
+			  
+	  		   if ( height <= Fang + 1 + N ) { return difficulty_plate;  }
+ 
+			   previous_timestamp = timestamps[0];
+			   for ( i = 1; i <= N; i++) {        
+			      // Safely prevent out-of-sequence timestamps
+			      if ( timestamps[i]  > previous_timestamp ) {   this_timestamp = timestamps[i];  } 
+			      else {  this_timestamp = previous_timestamp;   }
+			      L +=  i*std::min(6*T , this_timestamp - previous_timestamp);
+			      previous_timestamp = this_timestamp; 
+			   }
+			   if (L < N*N*T/20 ) { L =  N*N*T/20; }
+			   avg_D = ( cumulativeDifficulties[N] - cumulativeDifficulties[0] )/ N;
+   
+			   // Prevent round off error for small D and overflow for large D.
+			   if (avg_D > 2000000*N*N*T) { 
+			       next_D = (avg_D/(200*L))*(N*(N+1)*T*97);   
+			   }   
+			   else {    next_D = (avg_D*N*(N+1)*T*97)/(200*L);    }
+	
+			   // Optional. Make all insignificant digits zero for easy reading.
+			   i = 1000000000;
+			   while (i > 1) { 
+			     if ( next_D > i*100 ) { next_D = ((next_D+i/2)/i)*i; break; }
+			     else { i /= 10; }
+			   }
+			   // Make least 2 digits = size of hash rate change last 11 blocks if it's statistically significant.
+			   // D=2540035 => hash rate 3.5x higher than D expectde. Blocks coming 3.5x too fast.
+			   if ( next_D > 10000 ) { 
+			     uint64_t est_HR = (10*(11*T+(timestamps[N]-timestamps[N-11])/2))/(timestamps[N]-timestamps[N-11]+1);
+			     if (  est_HR > 5 && est_HR < 22 )  {  est_HR=0;   }
+			     est_HR = std::min(static_cast<uint64_t>(99), est_HR);
+			     next_D = ((next_D+50)/100)*100 + est_HR;  
+			   }
+	         	   // mini-lim
+	   		   if (!isTestnet() && next_D < 10000) {
+	  			next_D = 10000;
+			   }
+
+			   return  next_D;
+	}
+
 
 	bool Currency::checkProofOfWorkV1(Crypto::cn_context& context, const Block& block, difficulty_type currentDiffic,
 		Crypto::Hash& proofOfWork) const {
@@ -769,7 +838,8 @@ namespace CryptoNote {
  		timestampCheckWindow_v1(parameters::BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW_V1);		
 		blockFutureTimeLimit(parameters::CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT);
  		blockFutureTimeLimit_v1(parameters::CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V1);
-		
+		blockFutureTimeLimit_v2(parameters::CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V2);
+
 
 		moneySupply(parameters::MONEY_SUPPLY);
 		emissionSpeedFactor(parameters::EMISSION_SPEED_FACTOR);
@@ -788,6 +858,7 @@ namespace CryptoNote {
 		defaultDustThreshold(parameters::DEFAULT_DUST_THRESHOLD);
 
 		difficultyTarget(parameters::DIFFICULTY_TARGET);
+		difficultyTarget_DRGL(parameters::DIFFICULTY_TARGET_DRGL);
 		difficultyWindow(parameters::DIFFICULTY_WINDOW);
 		difficultyLag(parameters::DIFFICULTY_LAG);
 		difficultyCut(parameters::DIFFICULTY_CUT);
@@ -797,6 +868,8 @@ namespace CryptoNote {
 		maxBlockSizeGrowthSpeedDenominator(parameters::MAX_BLOCK_SIZE_GROWTH_SPEED_DENOMINATOR);
 
 		lockedTxAllowedDeltaSeconds(parameters::CRYPTONOTE_LOCKED_TX_ALLOWED_DELTA_SECONDS);
+		lockedTxAllowedDeltaSeconds_v2(parameters::CRYPTONOTE_LOCKED_TX_ALLOWED_DELTA_SECONDS_V2);
+
 		lockedTxAllowedDeltaBlocks(parameters::CRYPTONOTE_LOCKED_TX_ALLOWED_DELTA_BLOCKS);
 
 		mempoolTxLiveTime(parameters::CRYPTONOTE_MEMPOOL_TX_LIVETIME);

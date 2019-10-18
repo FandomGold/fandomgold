@@ -859,7 +859,7 @@ bool Blockchain::switch_to_alternative_blockchain(std::list<blocks_ext_by_hash::
 			  failed_checks++;
 			  continue;
 		  }
-		  double lam = double(high_timestamp - low_timestamp) / double(CryptoNote::parameters::DIFFICULTY_TARGET);
+		  double lam = double(high_timestamp - low_timestamp) / double(m_currency.difficultyTarget(blk.majorVersion));
 		  if (calc_poisson_ln(lam, alt_chain_size + i) < CryptoNote::parameters::POISSON_LOG_P_REJECT)
 		  {
 			  logger(INFO) << "Poisson check at depth " << i << " failed! delta_t: " << (high_timestamp - low_timestamp) << " size: " << alt_chain_size + i;
@@ -1694,7 +1694,7 @@ bool Blockchain::is_tx_spendtime_unlocked(uint64_t unlock_time) {
   } else {
     //interpret as time
     uint64_t current_time = static_cast<uint64_t>(time(NULL));
-    if (current_time + m_currency.lockedTxAllowedDeltaSeconds() >= unlock_time)
+    if (current_time + m_currency.lockedTxAllowedDeltaSeconds(blockMajorVersion) >= unlock_time)
       return true;
     else
       return false;

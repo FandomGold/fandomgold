@@ -50,7 +50,10 @@ public:
   size_t timestampCheckWindow_v1() const { return m_timestampCheckWindow_v1; }
   uint64_t blockFutureTimeLimit() const { return m_blockFutureTimeLimit; }
   uint64_t blockFutureTimeLimit(uint8_t blockMajorVersion) const {
-    if (blockMajorVersion >= BLOCK_MAJOR_VERSION_5) {
+    if (blockMajorVersion >= BLOCK_MAJOR_VERSION_7) {
+      return blockFutureTimeLimit_v2();
+      }
+    else if (blockMajorVersion >= BLOCK_MAJOR_VERSION_5) {
       return blockFutureTimeLimit_v1();
       }
     else {
@@ -58,6 +61,8 @@ public:
       }
     }
   uint64_t blockFutureTimeLimit_v1() const { return m_blockFutureTimeLimit_v1; }
+  uint64_t blockFutureTimeLimit_v2() const { return m_blockFutureTimeLimit_v2; }
+
 
   uint64_t moneySupply() const { return m_moneySupply; }
   unsigned int emissionSpeedFactor() const { return m_emissionSpeedFactor; }
@@ -78,6 +83,16 @@ public:
   uint64_t defaultDustThreshold() const { return m_defaultDustThreshold; }
 
   uint64_t difficultyTarget() const { return m_difficultyTarget; }
+  uint64_t difficultyTarget(uint8_t blockMajorVersion) const {
+    if (blockMajorVersion >= BLOCK_MAJOR_VERSION_7) { 
+      return difficultyTarget(); 
+    }
+    else {
+      return difficultyTarget_DRGL();
+    }
+  }
+  uint64_t difficultyTarget_DRGL() const { return m_difficultyTarget_DRGL; }
+
   size_t difficultyWindow() const { return m_difficultyWindow; }
   size_t difficultyLag() const { return m_difficultyLag; }
   size_t difficultyCut() const { return m_difficultyCut; }
@@ -91,7 +106,7 @@ public:
     else {
       return difficultyBlocksCount();
     }
-  };
+  }
   size_t difficultyBlocksCount() const { return m_difficultyWindow + m_difficultyLag; }
   size_t difficultyBlocksCount2() const { return CryptoNote::parameters::DIFFICULTY_WINDOW_V2; }
   size_t difficultyBlocksCount3() const { return CryptoNote::parameters::DIFFICULTY_WINDOW_V3; }
@@ -101,6 +116,15 @@ public:
   uint64_t maxBlockSizeGrowthSpeedDenominator() const { return m_maxBlockSizeGrowthSpeedDenominator; }
 
   uint64_t lockedTxAllowedDeltaSeconds() const { return m_lockedTxAllowedDeltaSeconds; }
+  uint64_t lockedTxAllowedDeltaSeconds(uint8_t blockMajorVersion) const {
+    if (blockMajorVersion >= BLOCK_MAJOR_VERSION_7) { 
+      return lockedTxAllowedDeltaSeconds_v2(); 
+    }
+    else {
+      return lockedTxAllowedDeltaSeconds();
+    }
+  }
+  uint64_t lockedTxAllowedDeltaSeconds_v2() const { return m_lockedTxAllowedDeltaSeconds_v2; }
   size_t lockedTxAllowedDeltaBlocks() const { return m_lockedTxAllowedDeltaBlocks; }
 
   uint64_t mempoolTxLiveTime() const { return m_mempoolTxLiveTime; }
@@ -156,7 +180,8 @@ public:
   difficulty_type nextDifficultyV2(std::vector<uint64_t> timestamps, std::vector<difficulty_type> Difficulties) const;
   difficulty_type nextDifficultyV3(std::vector<uint64_t> timestamps, std::vector<difficulty_type> Difficulties) const;
   difficulty_type nextDifficultyV4(uint32_t height, uint8_t blockMajorVersion, std::vector<uint64_t> timestamps, std::vector<difficulty_type> Difficulties) const;
-  
+  difficulty_type nextDifficultyV5(uint32_t height, uint8_t blockMajorVersion, std::vector<uint64_t> timestamps, std::vector<difficulty_type> Difficulties) const;
+
   bool checkProofOfWorkV1(Crypto::cn_context& context, const Block& block, difficulty_type currentDiffic, Crypto::Hash& proofOfWork) const;
   bool checkProofOfWorkV2(Crypto::cn_context& context, const Block& block, difficulty_type currentDiffic, Crypto::Hash& proofOfWork) const;
   bool checkProofOfWork(Crypto::cn_context& context, const Block& block, difficulty_type currentDiffic, Crypto::Hash& proofOfWork) const;
@@ -182,6 +207,8 @@ private:
   size_t m_timestampCheckWindow_v1;
   uint64_t m_blockFutureTimeLimit;
   uint64_t m_blockFutureTimeLimit_v1;
+  uint64_t m_blockFutureTimeLimit_v2;
+
 
   uint64_t m_moneySupply;
   unsigned int m_emissionSpeedFactor;
@@ -201,6 +228,8 @@ private:
   uint64_t m_defaultDustThreshold;
 
   uint64_t m_difficultyTarget;
+  uint64_t m_difficultyTarget_DRGL;
+
   size_t m_difficultyWindow;
   size_t m_difficultyLag;
   size_t m_difficultyCut;
@@ -210,6 +239,8 @@ private:
   uint64_t m_maxBlockSizeGrowthSpeedDenominator;
 
   uint64_t m_lockedTxAllowedDeltaSeconds;
+  uint64_t m_lockedTxAllowedDeltaSeconds_v2;
+
   size_t m_lockedTxAllowedDeltaBlocks;
 
   uint64_t m_mempoolTxLiveTime;
@@ -272,6 +303,7 @@ public:
   
   CurrencyBuilder& blockFutureTimeLimit(uint64_t val) { m_currency.m_blockFutureTimeLimit = val; return *this; }
   CurrencyBuilder& blockFutureTimeLimit_v1(uint64_t val) { m_currency.m_blockFutureTimeLimit_v1 = val; return *this; }
+  CurrencyBuilder& blockFutureTimeLimit_v2(uint64_t val) { m_currency.m_blockFutureTimeLimit_v2 = val; return *this; }
 
   CurrencyBuilder& moneySupply(uint64_t val) { m_currency.m_moneySupply = val; return *this; }
   CurrencyBuilder& emissionSpeedFactor(unsigned int val);
@@ -290,6 +322,8 @@ public:
   CurrencyBuilder& defaultDustThreshold(uint64_t val) { m_currency.m_defaultDustThreshold = val; return *this; }
 
   CurrencyBuilder& difficultyTarget(uint64_t val) { m_currency.m_difficultyTarget = val; return *this; }
+  CurrencyBuilder& difficultyTarget_DRGL(uint64_t val) { m_currency.m_difficultyTarget_DRGL = val; return *this; }
+
   CurrencyBuilder& difficultyWindow(size_t val);
   CurrencyBuilder& difficultyLag(size_t val) { m_currency.m_difficultyLag = val; return *this; }
   CurrencyBuilder& difficultyCut(size_t val) { m_currency.m_difficultyCut = val; return *this; }
@@ -299,6 +333,7 @@ public:
   CurrencyBuilder& maxBlockSizeGrowthSpeedDenominator(uint64_t val) { m_currency.m_maxBlockSizeGrowthSpeedDenominator = val; return *this; }
 
   CurrencyBuilder& lockedTxAllowedDeltaSeconds(uint64_t val) { m_currency.m_lockedTxAllowedDeltaSeconds = val; return *this; }
+  CurrencyBuilder& lockedTxAllowedDeltaSeconds_v2(uint64_t val) { m_currency.m_lockedTxAllowedDeltaSeconds_v2 = val; return *this; }
   CurrencyBuilder& lockedTxAllowedDeltaBlocks(size_t val) { m_currency.m_lockedTxAllowedDeltaBlocks = val; return *this; }
 
   CurrencyBuilder& mempoolTxLiveTime(uint64_t val) { m_currency.m_mempoolTxLiveTime = val; return *this; }
