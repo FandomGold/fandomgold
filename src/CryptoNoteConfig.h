@@ -98,7 +98,7 @@ const uint32_t UPGRADE_HEIGHT_V3                             = 154321; //{Longcl
 const uint32_t UPGRADE_HEIGHT_V4                             = 300000; //{Dracarys}
 const uint32_t UPGRADE_HEIGHT_V5                             = 324819; //{Ironborn}  CN7  (variant1) 
 const uint32_t UPGRADE_HEIGHT_V6                             = 345678; //{Ice&fire}  CN8  (variant2)
-const uint32_t UPGRADE_HEIGHT_V7                             = 800000; // place holder
+const uint32_t UPGRADE_HEIGHT_V7                             = 656565; //FandomGold
   
 const unsigned UPGRADE_VOTING_THRESHOLD                      = 90; // percent
 const uint32_t UPGRADE_VOTING_WINDOW                         = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;  // blocks
