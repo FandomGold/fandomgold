@@ -60,7 +60,7 @@ const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY             = 24 * 60 * 60 / DI
 const size_t   DIFFICULTY_WINDOW                             = 1067; // blocks  Original CryptoNote
 const size_t   DIFFICULTY_WINDOW_V2                          = 18;  // blocks  Zawy v1.0
 const size_t   DIFFICULTY_WINDOW_V3                          = 60;  // blocks  Zawy-LWMA1
-const size_t   DIFFICULTY_WINDOW_V4                          = 20;  // blocks  Zawy-LWMA1 Fandom GOLD
+const size_t   DIFFICULTY_WINDOW_V4                          = 45;  // blocks  Zawy-LWMA1 Fandom GOLD
 
 
 const uint64_t MINIMUM_FEE                                   = UINT64_C(800000);
