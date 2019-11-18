@@ -1,4 +1,5 @@
 // Copyright (c) 2012-2016, The CryptoNote developers, The Bytecoin developers
+// Copyright (c) 2018-2019, The Fandom Gold Project
 //
 // This file is part of Bytecoin.
 //
@@ -20,7 +21,7 @@
 #include <atomic>
 
 #include <Common/ObserverManager.h>
-
+#include "CryptoNoteConfig.h"
 #include "CryptoNoteCore/ICore.h"
 
 #include "CryptoNoteProtocol/CryptoNoteProtocolDefinitions.h"
