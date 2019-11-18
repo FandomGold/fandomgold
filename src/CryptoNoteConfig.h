@@ -4,6 +4,8 @@
 // Copyright (c) 2014-2018, The Forknote developers
 // Copyright (c) 2016-2019, The Karbowanec developers
 // Copyright (c) 2018-2019, The Ryo Currency developers
+// Copyright (c) 2018-2019, The Cash2 developers
+//
 // Copyright (c) 2017-2019, The Fandom GOLD project
 //
 // This file is part of Fandom GOLD.
@@ -154,6 +156,7 @@ const uint32_t P2P_FAILED_ADDR_FORGET_SECONDS                = (45 * 60);     //
 const uint32_t P2P_IP_BLOCKTIME                              = (60 * 60 * 24);// 24 hr
 const uint32_t P2P_IP_FAILS_BEFORE_BLOCK                     =  45;
 const uint32_t P2P_IDLE_CONNECTION_KILL_INTERVAL             = (45 * 60);     // 45 min
+const uint32_t CRYPTONOTE_PROTOCOL_MAX_OBJECT_REQUEST_COUNT  = 500;
 const char     P2P_STAT_TRUSTED_PUB_KEY[]                    = "";
 
 const char* const SEED_NODES[] = {
