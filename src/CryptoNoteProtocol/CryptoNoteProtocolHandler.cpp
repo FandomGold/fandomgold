@@ -1,6 +1,8 @@
 // Copyright (c) 2012-2016, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2014-2018, The Forknote project
 // Copyright (c) 2016-2018, The Karbowanec developers
+// Copyright (c) 2018-2019, The Cash2 developers
+// Copyright (c) 2018-2019, The Fandom Gold Project
 //
 // This file is part of Bytecoin.
 //
@@ -322,6 +324,14 @@ int CryptoNoteProtocolHandler::handle_notify_new_transactions(int command, NOTIF
 
 int CryptoNoteProtocolHandler::handle_request_get_objects(int command, NOTIFY_REQUEST_GET_OBJECTS::request& arg, CryptoNoteConnectionContext& context) {
   logger(Logging::TRACE) << context << "NOTIFY_REQUEST_GET_OBJECTS";
+    if (arg.blocks.size() + arg.txs.size() > CRYPTONOTE_PROTOCOL_MAX_OBJECT_REQUEST_COUNT) {
+    logger(Logging::ERROR) << context << 
+      "Requested objects count is too big ("
+      << arg.blocks.size() << ") expected no more than "
+      << CRYPTONOTE_PROTOCOL_MAX_OBJECT_REQUEST_COUNT;
+    context.m_state = CryptoNoteConnectionContext::state_shutdown;
+    return 1;
+  }
   NOTIFY_RESPONSE_GET_OBJECTS::request rsp;
   if (!m_core.handle_get_objects(arg, rsp)) {
     logger(Logging::ERROR, Logging::BRIGHT_MAGENTA) << context << "failed to handle request NOTIFY_REQUEST_GET_OBJECTS, dropping connection";
