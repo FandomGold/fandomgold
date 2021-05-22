@@ -142,6 +142,19 @@ bool DaemonCommandsHandler::status(const std::vector<std::string>& args) {
   uint8_t majorVersion = m_core.getBlockMajorVersionForHeight(height);
   bool synced = ((uint32_t)height == (uint32_t)last_known_block_index);
 
+#ifdef _WIN32 
+  std::cout << std::endl
+	  << (synced ? "Synced " : "Syncing ") << height << "/" << last_known_block_index
+	  << " (" << get_sync_percentage(height, last_known_block_index) << "%) "
+	  << "on " << (m_core.currency().isTestnet() ? "testnet, " : "Fango Mainnet, ")
+	  << "network hashrate: " << get_mining_speed(hashrate) << ", difficulty: " << difficulty << ", "
+	  << "block v. " << (int)majorVersion << ", "
+	  << outgoing_connections_count << " out. + " << incoming_connections_count << " inc. connections, "
+	  << rpc_conn << " rpc connections, "
+	  << "uptime: " << (unsigned int)floor(uptime / 60.0 / 60.0 / 24.0) << "d " << (unsigned int)floor(fmod((uptime / 60.0 / 60.0), 24.0)) << "h "
+	  << (unsigned int)floor(fmod((uptime / 60.0), 60.0)) << "m " << (unsigned int)fmod(uptime, 60.0) << "s"
+	  << std::endl;
+#else
   std::cout << std::endl
     <<(synced ? "Synced " : "Syncing ")<< bolden << height << "/" << last_known_block_index
     << " (" << get_sync_percentage(height, last_known_block_index) << "%) "<< odef
@@ -152,7 +165,7 @@ bool DaemonCommandsHandler::status(const std::vector<std::string>& args) {
     << gold << uld << ", RPC Connections: " << odef << bolden << rpc_conn << odef << gold << uld
     << ", Node Uptime: " << odef << bolden<< (unsigned int)floor(uptime / 60.0 / 60.0 / 24.0) << "d " << (unsigned int)floor(fmod((uptime / 60.0 / 60.0), 24.0)) << "h "
     << (unsigned int)floor(fmod((uptime / 60.0), 60.0)) << "m " << (unsigned int)fmod(uptime, 60.0) << "s"<< odef << def<< std::endl;
-
+#endif
   return true;
 }
 
