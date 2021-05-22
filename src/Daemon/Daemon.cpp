@@ -187,8 +187,19 @@ int main(int argc, char* argv[])
     Level cfgLogLevel = static_cast<Level>(static_cast<int>(Logging::ERROR) + command_line::get_arg(vm, arg_log_level));
 
     // configure logging
-    logManager.configure(buildLoggerConfiguration(cfgLogLevel, cfgLogFile));
-logger(INFO, BRIGHT_YELLOW) <<
+	    logManager.configure(buildLoggerConfiguration(cfgLogLevel, cfgLogFile));
+		logger(INFO, BRIGHT_YELLOW) <<
+#ifdef _WIN32
+" \n"
+"       8F88888888  A8888 N88b    N8N  .d8888b.   .d88888b.  \n"
+"       8F8        A88888 N888b   N8N d88P  Y88b d08P` `Y08b \n"
+"       8F8       A88P888 N8888b  N8N 8G8    8G8 800     008 \n"
+"       8F88888  A88P 888 N88Y88b N8N 8G8        800     008 \n"
+"       8F8     A88P  888 N8N Y88b88N 8G8  8888G 800     008 \n"
+"       8F8    A88P   888 N8N  Y8888N 8G8    8G8 800     008 \n"
+"       8F8   A8888888888 N8N   Y888N 8G8b  dGG8 Y80b. .d80P \n"
+"       8F8  A88P     888 N8N    Y88N  `Y8888P`   `Y80008P'  \n"
+#else
 " \n"
 " ███████████   █████████   ██████   █████   █████████     ███████   \n"
 "░░███░░░░░░█  ███░░░░░███ ░░██████ ░░███   ███░░░░░███  ███░░░░░███ \n"
@@ -198,9 +209,10 @@ logger(INFO, BRIGHT_YELLOW) <<
 " ░███  ░     ░███    ░███  ░███  ░░█████ ░░███  ░░███ ░░███     ███  \n"
 " █████       █████   █████ █████  ░░█████ ░░█████████  ░░░███████░   \n"
 " ░░░░░       ░░░░░   ░░░░░ ░░░░░    ░░░░░   ░░░░░░░░░     ░░░░░░░    \n"
-"\n" 
-<<"             "  PROJECT_VERSION_LONG "\n"
-"\n";
+#endif
+			"\n"
+			<< "             "  PROJECT_VERSION_LONG "\n"
+			"\n";
 
     if (command_line_preprocessor(vm, logger)) {
       return 0;
