@@ -1,5 +1,5 @@
 <img title="Unlock the Power of Fandom" src="https://raw.githubusercontent.com/FandomGold/XFG-data/master/Fango_gif01.GIF"><img/>
-### Fango is open-source decentralized P2P privacy cryptocurrency built by sound money advocates and fandom enthusiasts.
+### Fango is an open-source decentralized P2P privacy cryptocurrency network built by sound money advocates and fandom enthusiasts.
 
 Based on the CryptoNote protocol & philosophy.
 
@@ -64,7 +64,7 @@ or <code>./fangod --help</code> when outside of dæmon
 _________________________________________________________
 For the most user-friendly graphical interface experience
 
-the [Fango Desktop Wallet](https://github.com/fandomgold/fango-wallet). 
+see [Fango Desktop Wallet](https://github.com/fandomgold/fango-wallet). 
 _________________________________________________________
 
 _________________________________________________________
@@ -95,7 +95,7 @@ ________________
 
 ****Quick step by step tutorial using a Bash terminal on Windows 10****
 
-*(courtesy of & gratitude to Sir WindowSlayer of Galapagos)*
+*(courtesy of & gratitude to Sir Galapagos aka WindowSlayer)*
 
 https://www.windowscentral.com/how-install-bash-shell-command-line-windows-10
 
