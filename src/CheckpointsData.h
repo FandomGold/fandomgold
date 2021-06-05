@@ -1,6 +1,6 @@
 // Copyright (c) 2012-2016, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2016-2018, The Karbowanec developers
-// Copyright (c) 2018-2020, The Fandom Gold developers
+// Copyright (c) 2018-2021, The Fango developers
 //
 // This file is part of Fango.
 //
@@ -66,7 +66,9 @@ const std::initializer_list<CheckpointData> CHECKPOINTS = {
 { 657002, "29952d93e156602008c03070089d6ba6375e770dda5d31603d7493eec23e8618" },
 { 657025, "b654644cc363120a88f15e044cbe04935f7a0e347a72901a46d1db88348a7392" },
 { 690000, "294f9c92ec345d23543ce7dfb7d2487cb6d3b3c64e6d0158b165bf9f530aef30" },
-{ 696969, "da78f75378ca0d84108f636119cb228ba7185f953f36511c4c80812d77664050" }
+{ 696969, "da78f75378ca0d84108f636119cb228ba7185f953f36511c4c80812d77664050" },
+{ 720000, "673574f7b28a84ef81fb00f072d378fca271ba48e77250f225748c35ce873619" },
+{ 740000, "5c1b20e346df61f719a6d39cef03ca53d6978f4b00915b61ce139a67a5ea5d8d" }
 };
 
 }
