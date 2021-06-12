@@ -1075,7 +1075,7 @@ bool Blockchain::validate_miner_transaction(const Block& b, uint32_t height, siz
 
   auto blockMajorVersion = getBlockMajorVersionForHeight(height);
   if (!m_currency.getBlockReward(blockMajorVersion, blocksSizeMedian, cumulativeBlockSize, alreadyGeneratedCoins, fee, reward, emissionChange)) {
-    logger(INFO, BRIGHT_WHITE) << "block size " << cumulativeBlockSize << " is bigger than what is currently allowed on {DRAGONGLASS} blockchain";
+    logger(INFO, BRIGHT_WHITE) << "block size " << cumulativeBlockSize << " is bigger than what is currently allowed on Fango blockchain";
     return false;
   }
 
